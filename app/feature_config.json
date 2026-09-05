@@ -1,0 +1,22 @@
+{
+  "num_features": [
+    "price",
+    "freight_value",
+    "freight_ratio",
+    "payment_installments",
+    "product_weight_g",
+    "delay_days",
+    "purchase_dow",
+    "purchase_month",
+    "seller_avg_delay",
+    "seller_bad_rate",
+    "seller_order_count",
+    "freight_installment_interaction",
+    "delay_freight_interaction"
+  ],
+  "cat_features": [
+    "payment_type",
+    "product_category_name",
+    "customer_state"
+  ]
+}
