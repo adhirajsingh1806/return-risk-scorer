@@ -15,7 +15,7 @@
     "delay_freight_interaction": -9.21,
     "payment_type": "Credit Card",
     "product_category_name": "Toys",
-    "customer_state": "Andhra Pradesh",
+    "customer_state": "Santa Catarina",
     "true_label": 0,
     "predicted_probability": 0.527400016784668
   },
@@ -35,7 +35,7 @@
     "delay_freight_interaction": -1.02,
     "payment_type": "Credit Card",
     "product_category_name": "Baby",
-    "customer_state": "Bihar",
+    "customer_state": "Rio de Janeiro",
     "true_label": 1,
     "predicted_probability": 0.5403000116348267
   },
@@ -55,7 +55,7 @@
     "delay_freight_interaction": -1.03,
     "payment_type": "Credit Card",
     "product_category_name": "Musical Instruments",
-    "customer_state": "Maharashtra",
+    "customer_state": "Minas Gerais",
     "true_label": 0,
     "predicted_probability": 0.4821000099182129
   },
@@ -75,7 +75,7 @@
     "delay_freight_interaction": -6.57,
     "payment_type": "Bank Transfer",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Himachal Pradesh",
+    "customer_state": "Sergipe",
     "true_label": 0,
     "predicted_probability": 0.37290000915527344
   },
@@ -95,7 +95,7 @@
     "delay_freight_interaction": -2.38,
     "payment_type": "Bank Transfer",
     "product_category_name": "Garden Tools",
-    "customer_state": "Maharashtra",
+    "customer_state": "Minas Gerais",
     "true_label": 0,
     "predicted_probability": 0.4887999892234802
   },
@@ -115,7 +115,7 @@
     "delay_freight_interaction": -4.95,
     "payment_type": "Credit Card",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 1,
     "predicted_probability": 0.3353999853134155
   },
@@ -135,7 +135,7 @@
     "delay_freight_interaction": -1.49,
     "payment_type": "Bank Transfer",
     "product_category_name": "Housewares",
-    "customer_state": "Assam",
+    "customer_state": "Para\u00edba",
     "true_label": 1,
     "predicted_probability": 0.37070000171661377
   },
@@ -155,7 +155,7 @@
     "delay_freight_interaction": -5.23,
     "payment_type": "Credit Card",
     "product_category_name": "Sports Leisure",
-    "customer_state": "West Bengal",
+    "customer_state": "Bahia",
     "true_label": 0,
     "predicted_probability": 0.3248000144958496
   },
@@ -175,7 +175,7 @@
     "delay_freight_interaction": -5.88,
     "payment_type": "Bank Transfer",
     "product_category_name": "Small Appliances",
-    "customer_state": "Madhya Pradesh",
+    "customer_state": "Paran\u00e1",
     "true_label": 0,
     "predicted_probability": 0.08950000256299973
   },
@@ -195,7 +195,7 @@
     "delay_freight_interaction": -0.0,
     "payment_type": "Credit Card",
     "product_category_name": "Watches Gifts",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 1,
     "predicted_probability": 0.4171999990940094
   },
@@ -215,7 +215,7 @@
     "delay_freight_interaction": -2.68,
     "payment_type": "Credit Card",
     "product_category_name": "Watches Gifts",
-    "customer_state": "Andhra Pradesh",
+    "customer_state": "Santa Catarina",
     "true_label": 1,
     "predicted_probability": 0.5133000016212463
   },
@@ -235,7 +235,7 @@
     "delay_freight_interaction": -4.08,
     "payment_type": "Bank Transfer",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Rajasthan",
+    "customer_state": "Pernambuco",
     "true_label": 0,
     "predicted_probability": 0.37450000643730164
   },
@@ -255,7 +255,7 @@
     "delay_freight_interaction": -1.36,
     "payment_type": "Credit Card",
     "product_category_name": "Perfumery",
-    "customer_state": "Bihar",
+    "customer_state": "Rio de Janeiro",
     "true_label": 0,
     "predicted_probability": 0.12219999730587006
   },
@@ -275,7 +275,7 @@
     "delay_freight_interaction": -28.59,
     "payment_type": "Voucher",
     "product_category_name": "Bed Bath Table",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.3822000026702881
   },
@@ -295,7 +295,7 @@
     "delay_freight_interaction": 0.88,
     "payment_type": "Credit Card",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.8489999771118164
   },
@@ -315,7 +315,7 @@
     "delay_freight_interaction": -18.25,
     "payment_type": "Bank Transfer",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Madhya Pradesh",
+    "customer_state": "Paran\u00e1",
     "true_label": 1,
     "predicted_probability": 0.156700000166893
   },
@@ -335,7 +335,7 @@
     "delay_freight_interaction": -3.28,
     "payment_type": "Credit Card",
     "product_category_name": "Housewares",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.12269999831914902
   },
@@ -355,7 +355,7 @@
     "delay_freight_interaction": -3.26,
     "payment_type": "Credit Card",
     "product_category_name": "Home Construction",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.40230000019073486
   },
@@ -375,7 +375,7 @@
     "delay_freight_interaction": -2.13,
     "payment_type": "Credit Card",
     "product_category_name": "Consoles Games",
-    "customer_state": "Andhra Pradesh",
+    "customer_state": "Santa Catarina",
     "true_label": 0,
     "predicted_probability": 0.08320000022649765
   },
@@ -395,7 +395,7 @@
     "delay_freight_interaction": -2.35,
     "payment_type": "Credit Card",
     "product_category_name": "Computers Accessories",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.5353000164031982
   },
@@ -415,7 +415,7 @@
     "delay_freight_interaction": -10.03,
     "payment_type": "Credit Card",
     "product_category_name": "Furniture Decor",
-    "customer_state": "Maharashtra",
+    "customer_state": "Minas Gerais",
     "true_label": 0,
     "predicted_probability": 0.5918999910354614
   },
@@ -435,7 +435,7 @@
     "delay_freight_interaction": -70.96,
     "payment_type": "Credit Card",
     "product_category_name": "Electronics",
-    "customer_state": "Andhra Pradesh",
+    "customer_state": "Santa Catarina",
     "true_label": 0,
     "predicted_probability": 0.5238000154495239
   },
@@ -455,7 +455,7 @@
     "delay_freight_interaction": -2.76,
     "payment_type": "Credit Card",
     "product_category_name": "Construction Tools Construction",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.3763999938964844
   },
@@ -475,7 +475,7 @@
     "delay_freight_interaction": -8.98,
     "payment_type": "Credit Card",
     "product_category_name": "Bed Bath Table",
-    "customer_state": "Maharashtra",
+    "customer_state": "Minas Gerais",
     "true_label": 0,
     "predicted_probability": 0.6743000149726868
   },
@@ -495,7 +495,7 @@
     "delay_freight_interaction": -0.87,
     "payment_type": "Bank Transfer",
     "product_category_name": "Consoles Games",
-    "customer_state": "Tamil Nadu",
+    "customer_state": "Rio Grande do Sul",
     "true_label": 0,
     "predicted_probability": 0.4880000054836273
   },
@@ -515,7 +515,7 @@
     "delay_freight_interaction": -4.29,
     "payment_type": "Credit Card",
     "product_category_name": "Sports Leisure",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.28220000863075256
   },
@@ -535,7 +535,7 @@
     "delay_freight_interaction": -3.57,
     "payment_type": "Credit Card",
     "product_category_name": "Electronics",
-    "customer_state": "Bihar",
+    "customer_state": "Rio de Janeiro",
     "true_label": 0,
     "predicted_probability": 0.46140000224113464
   },
@@ -555,7 +555,7 @@
     "delay_freight_interaction": -1.63,
     "payment_type": "Credit Card",
     "product_category_name": "Baby",
-    "customer_state": "Assam",
+    "customer_state": "Para\u00edba",
     "true_label": 0,
     "predicted_probability": 0.4198000133037567
   },
@@ -575,7 +575,7 @@
     "delay_freight_interaction": -1.59,
     "payment_type": "Credit Card",
     "product_category_name": "Other",
-    "customer_state": "Maharashtra",
+    "customer_state": "Minas Gerais",
     "true_label": 1,
     "predicted_probability": 0.23600000143051147
   },
@@ -595,7 +595,7 @@
     "delay_freight_interaction": -6.49,
     "payment_type": "Bank Transfer",
     "product_category_name": "Housewares",
-    "customer_state": "Uttar Pradesh",
+    "customer_state": "S\u00e3o Paulo",
     "true_label": 0,
     "predicted_probability": 0.4505000114440918
   }
