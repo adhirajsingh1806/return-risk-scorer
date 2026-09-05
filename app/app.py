@@ -421,8 +421,8 @@ with tab_score:
             st.write(f"Decision threshold: {threshold} (selected to minimize total cost)")
             st.write(
                 f"Threshold assumes a false positive (flagging a good order) costs "
-                f"₹{threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
-                f"₹{threshold_config['cost_fn']}."
+                f"R${threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
+                f"R${threshold_config['cost_fn']}."
             )
             st.json(user_input)
 
@@ -470,9 +470,9 @@ with tab_metrics:
 
     st.write(
         f"At this threshold: **{legit_flagged_pct:.1%}** of legitimate orders are wrongly flagged "
-        f"({fp_count} orders), costing an estimated **₹{fp_count * cost_fp:,}** in review overhead. "
-        f"**{fn_count}** risky orders are missed, costing an estimated **₹{fn_count * cost_fn:,}** in unmanaged losses. "
-        f"Estimated total cost at this threshold: **₹{total_cost:,}**."
+        f"({fp_count} orders), costing an estimated **R${fp_count * cost_fp:,}** in review overhead. "
+        f"**{fn_count}** risky orders are missed, costing an estimated **R${fn_count * cost_fn:,}** in unmanaged losses. "
+        f"Estimated total cost at this threshold: **R${total_cost:,}**."
     )
 
     st.markdown("**Confusion matrix at this threshold**")
