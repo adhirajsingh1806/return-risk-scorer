@@ -62,39 +62,44 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ 
+def artifact_path(filename):
+    return os.path.join(BASE_DIR, filename)
+ 
 @st.cache_resource
 def load_artifacts():
     try:
-        model = joblib.load("risk_model.pkl")
-        explainer = joblib.load("shap_explainer.pkl")
-        with open("feature_config.json") as f:
+        model = joblib.load(artifact_path("risk_model.pkl"))
+        explainer = joblib.load(artifact_path("shap_explainer.pkl"))
+        with open(artifact_path("feature_config.json")) as f:
             feature_config = json.load(f)
-        with open("cat_options.json") as f:
+        with open(artifact_path("cat_options.json")) as f:
             cat_options = json.load(f)
-        with open("num_ranges.json") as f:
+        with open(artifact_path("num_ranges.json")) as f:
             num_ranges = json.load(f)
-        with open("threshold_config.json") as f:
+        with open(artifact_path("threshold_config.json")) as f:
             threshold_config = json.load(f)
-        with open("model_metrics.json") as f:
+        with open(artifact_path("model_metrics.json")) as f:
             model_metrics = json.load(f)
-        with open("threshold_sweep.json") as f:
+        with open(artifact_path("threshold_sweep.json")) as f:
             threshold_sweep = json.load(f)
-        with open("audit_sample.json") as f:
+        with open(artifact_path("audit_sample.json")) as f:
             audit_sample = json.load(f)
-        with open("cost_scenarios.json") as f:
+        with open(artifact_path("cost_scenarios.json")) as f:
             cost_scenarios = json.load(f)
         return (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
                 model_metrics, threshold_sweep, audit_sample, cost_scenarios, None)
     except FileNotFoundError as e:
         return None, None, None, None, None, None, None, None, None, None, str(e)
-
+ 
 (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
  model_metrics, threshold_sweep, audit_sample, cost_scenarios, load_error) = load_artifacts()
-
+ 
 if load_error:
     st.error(
         f"Missing required file: {load_error}. "
-        "Run save_artifacts_snippet.py first, then restart this app."
+        "Run src/train_final_model.py from the repo root first, then restart this app."
     )
     st.stop()
 
