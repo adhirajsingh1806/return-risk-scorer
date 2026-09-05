@@ -2,7 +2,6 @@
 streamlit
 plotly
 joblib
-os
 
 # modeling / data
 pandas
