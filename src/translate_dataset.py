@@ -96,16 +96,16 @@ payments["payment_type"] = payments["payment_type"].map(payment_type_map).fillna
 payments.to_csv("olist_order_payments_dataset_en.csv", index=False)
 print("Saved: olist_order_payments_dataset_en.csv\n")
 
-#Customer-Seller State: Brazilian States converted to Indian States for ease of understanding
+#Customer-Seller State: Brazilian State codes converted to state names for ease of understanding
 
-brazil_to_india_state = {
-    "SP": "Uttar Pradesh", "MG": "Maharashtra", "RJ": "Bihar", "BA": "West Bengal",
-    "PR": "Madhya Pradesh", "RS": "Tamil Nadu", "PE": "Rajasthan", "CE": "Karnataka",
-    "PA": "Gujarat", "SC": "Andhra Pradesh", "MA": "Odisha", "GO": "Telangana",
-    "AM": "Kerala", "ES": "Jharkhand", "PB": "Assam", "RN": "Punjab",
-    "MT": "Chhattisgarh", "AL": "Haryana", "PI": "Delhi", "DF": "Jammu and Kashmir",
-    "MS": "Uttarakhand", "SE": "Himachal Pradesh", "RO": "Tripura", "TO": "Meghalaya",
-    "AC": "Manipur", "AP": "Nagaland", "RR": "Goa",
+brazil_state_names = {
+    "SP": "São Paulo", "MG": "Minas Gerais", "RJ": "Rio de Janeiro", "BA": "Bahia",
+    "PR": "Paraná", "RS": "Rio Grande do Sul", "PE": "Pernambuco", "CE": "Ceará",
+    "PA": "Pará", "SC": "Santa Catarina", "MA": "Maranhão", "GO": "Goiás",
+    "AM": "Amazonas", "ES": "Espírito Santo", "PB": "Paraíba", "RN": "Rio Grande do Norte",
+    "MT": "Mato Grosso", "AL": "Alagoas", "PI": "Piauí", "DF": "Distrito Federal",
+    "MS": "Mato Grosso do Sul", "SE": "Sergipe", "RO": "Rondônia", "TO": "Tocantins",
+    "AC": "Acre", "AP": "Amapá", "RR": "Roraima",
 }
 
 customers = pd.read_csv("olist_customers_dataset.csv")
