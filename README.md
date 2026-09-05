@@ -64,7 +64,7 @@ A Streamlit app with four tabs:
 
 ```bash
 cd app
-pip install streamlit pandas plotly joblib xgboost shap scikit-learn
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
