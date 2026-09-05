@@ -470,9 +470,9 @@ with tab_metrics:
 
     st.write(
         f"At this threshold: **{legit_flagged_pct:.1%}** of legitimate orders are wrongly flagged "
-        f"({fp_count} orders), costing an estimated **R${fp_count * cost_fp:,}** in review overhead. "
-        f"**{fn_count}** risky orders are missed, costing an estimated **R${fn_count * cost_fn:,}** in unmanaged losses. "
-        f"Estimated total cost at this threshold: **R${total_cost:,}**."
+        f"({fp_count} orders), costing an estimated **{fp_count * cost_fp:,} Brazilian Reals** in review overhead. "
+        f"**{fn_count}** risky orders are missed, costing an estimated **{fn_count * cost_fn:,} Brazilian Reals** in unmanaged losses. "
+        f"Estimated total cost at this threshold: **{total_cost:,} Brazilian Reals**."
     )
 
     st.markdown("**Confusion matrix at this threshold**")
