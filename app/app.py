@@ -68,21 +68,21 @@ st.markdown("""
 @st.cache_resource
 def load_artifacts():
     try:
-        model = joblib.load("risk_model.pkl")
-        explainer = joblib.load("shap_explainer.pkl")
-        with open("feature_config.json") as f:
+        model = joblib.load(APP_DIR / "risk_model.pkl")
+        explainer = joblib.load(APP_DIR / "shap_explainer.pkl")
+        with open(APP_DIR / "feature_config.json") as f:
             feature_config = json.load(f)
-        with open("cat_options.json") as f:
+        with open(APP_DIR / "cat_options.json") as f:
             cat_options = json.load(f)
-        with open("num_ranges.json") as f:
+        with open(APP_DIR / "num_ranges.json") as f:
             num_ranges = json.load(f)
-        with open("threshold_config.json") as f:
+        with open(APP_DIR / "threshold_config.json") as f:
             threshold_config = json.load(f)
-        with open("model_metrics.json") as f:
+        with open(APP_DIR / "model_metrics.json") as f:
             model_metrics = json.load(f)
-        with open("threshold_sweep.json") as f:
+        with open(APP_DIR / "threshold_sweep.json") as f:
             threshold_sweep = json.load(f)
-        with open("audit_sample.json") as f:
+        with open(APP_DIR / "audit_sample.json") as f:
             audit_sample = json.load(f)
         return (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
                 model_metrics, threshold_sweep, audit_sample, None)
