@@ -47,16 +47,44 @@ On a held-out test set of 22,816 orders (15.3% actually bad):
 
 AUC-PR is the more honest number here since bad orders are the minority class — ROC-AUC alone can look better than the model deserves on an imbalanced problem like this one.
 
-**On the threshold:** it's not 0.5 by default, it's chosen to minimize estimated rupee cost, assuming a false positive (wrongly flagging a good order) costs ₹50 in review overhead and a false negative (missing a bad order) costs ₹300 in unmanaged losses. The app lets you drag the threshold and watch precision, recall, and cost move together, instead of treating precision as a number to chase for its own sake.
+**On the threshold:** it's not 0.5 by default, and it's not a single fixed
+number either. The threshold is chosen to minimize estimated rupee cost —
+but the ratio between a false positive (wrongly flagging a good order) and
+a false negative (missing a bad order) turned out to be a real open
+question rather than an obvious assumption. The original build assumed a
+missed bad order costs 6x a false flag (₹50 vs. ₹300). Industry research on
+ecommerce fraud/risk detection generally finds the opposite: false
+positives tend to cost merchants *more* than the bad orders they prevent —
+one commonly cited figure is $13 lost to false declines for every $1 of
+actual fraud. Olist has no direct cost data to settle this precisely, so
+rather than pick one ratio, three scenarios are compared:
 
-Precision at 0.37 means most flags are still false alarms — that's the honest state of the model right now, not something to hide. Given the cost asymmetry (missing a bad order costs 6x more than a false flag), the model is deliberately tuned to over-flag rather than under-flag.
+| Scenario | Threshold | Cost | Precision | Recall |
+|---|---|---|---|---|
+| 6:1, missed order costs more (original) | 0.51 | ₹641,050 | 0.37 | 0.54 |
+| 3:1, false flag costs more | 0.89 | ₹143,100 | 0.92 | 0.25 |
+| 2:1, industry-aligned | 0.88 | ₹138,850 | 0.91 | 0.25 |
+
+The app defaults to the **2:1 industry-aligned scenario** for live scoring,
+but the Model Performance tab lets you compare all three and drag the
+threshold within any of them — precision, recall, and cost move together
+live, since chasing precision as a number in isolation ignores what it
+costs in missed recall.
+
+Notice the 3:1 and 2:1 scenarios land on nearly the same threshold and
+recall despite the ratio changing — that's not a bug, it means the
+marginal trade-off in this region of the precision-recall curve is steep:
+past roughly 50% recall, catching each additional bad order costs a
+disproportionate number of false flags. Precision at 0.37-0.92 depending
+on scenario reflects a real, cost-dependent trade-off, not one settled
+number to defend.
 
 ## The app
 
 A Streamlit app with four tabs:
 
 - **Score an Order** — enter order details, get a score, a decision, and the top 3 factors behind it
-- **Model Performance** — held-out metrics, an adjustable threshold slider with live precision/recall/cost, a confusion matrix, and the precision-recall curve
+- **Model Performance** — held-out metrics, a comparison table across three cost-ratio scenarios, an adjustable threshold slider with live precision/recall/cost for whichever scenario you pick, a confusion matrix, and the precision-recall curve
 - **Audit Trail** — a sample of held-out orders with their score, decision, top reason, and actual outcome, so a reviewer can check the model's calls against ground truth
 - **Architecture** — the data flow above, laid out visually
 
@@ -68,7 +96,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The app loads its model, encoders, and precomputed metrics from files sitting next to `app.py` (`risk_model.pkl`, `shap_explainer.pkl`, and a handful of JSON config files), so run it from inside the `app/` folder.
+The app resolves its artifact paths relative to `app.py`'s own location, so it works correctly whether run locally with `app/` as the working directory, or deployed on Streamlit Community Cloud (which runs from the repo root regardless of where the main file lives).
 
 ## Repo structure
 
@@ -81,7 +109,9 @@ src/          dataset translation script + the final training script that produc
 
 ## What's not solved yet
 
-- Precision is still the weak point — the model over-flags. Better seller/behavioral features or a two-stage review process would likely help more than further threshold tuning at this point.
+- Precision is still the weak point in the FN-costly (6:1) scenario, and recall is the weak point in the FP-costly scenarios — the underlying trade-off is steep, not a tuning oversight. Better seller/behavioral features or a two-stage review process would likely shift this more than further threshold tuning at this point.
+- The true cost ratio is a business decision, not something this project can settle definitively — three scenarios are presented as evidence, not one answer.
+- The seller_bad_rate error-analysis finding (notebook 05) was only verified under the original 6:1 threshold (0.51); whether the same false-positive concentration pattern holds at the industry-aligned threshold (0.88) hasn't been re-checked.
 - Seller history in the live scoring tab is entered manually since there's no real seller database behind this demo — in a production setting it'd be looked up automatically from order history.
 - No calibration step yet, so the raw probability shouldn't be read as a literal likelihood, just a ranking signal.
 
