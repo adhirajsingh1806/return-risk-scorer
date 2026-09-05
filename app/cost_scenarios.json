@@ -1,0 +1,26 @@
+{
+  "scenarios": {
+    "fn_costly": {
+      "label": "Missed order costs more (6:1)",
+      "cost_fp": 50,
+      "cost_fn": 300,
+      "optimal_threshold": 0.5099999999999998,
+      "optimal_cost": 641050
+    },
+    "balanced": {
+      "label": "False flag costs more (3:1)",
+      "cost_fp": 150,
+      "cost_fn": 50,
+      "optimal_threshold": 0.8899999999999996,
+      "optimal_cost": 143100
+    },
+    "fp_costly": {
+      "label": "Industry-aligned (2:1)",
+      "cost_fp": 100,
+      "cost_fn": 50,
+      "optimal_threshold": 0.8799999999999996,
+      "optimal_cost": 138850
+    }
+  },
+  "default_scenario": "fp_costly"
+}
