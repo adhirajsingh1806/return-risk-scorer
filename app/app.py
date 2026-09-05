@@ -421,8 +421,8 @@ with tab_score:
             st.write(f"Decision threshold: {threshold} (selected to minimize total cost)")
             st.write(
                 f"Threshold assumes a false positive (flagging a good order) costs "
-                f"R${threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
-                f"R${threshold_config['cost_fn']}."
+                f"{threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
+                f"{threshold_config['cost_fn']}."
             )
             st.json(user_input)
 
