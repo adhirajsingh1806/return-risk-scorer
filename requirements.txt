@@ -1,0 +1,15 @@
+# app
+streamlit
+plotly
+joblib
+
+# modeling / data
+pandas
+numpy
+scikit-learn
+xgboost
+shap
+
+# notebooks (EDA, baseline model, plots)
+matplotlib
+jupyter
