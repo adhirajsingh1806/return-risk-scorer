@@ -141,18 +141,39 @@ probs = model.predict_proba(x_test[FEATURES])[:, 1]
 print("AUC-ROC:", roc_auc_score(y_test, probs))
 print("AUC-PR:", average_precision_score(y_test, probs))
 
-#Cost-optimal threshold
-cost_fp, cost_fn = 50, 300
-best_thresh, best_cost = None, float("inf")
-for t in np.arange(0.1, 0.9, 0.01):
+COST_SCENARIOS = {
+    "fn_costly":  {"label": "Missed order costs more (6:1)",  "cost_fp": 50,  "cost_fn": 300},
+    "balanced":   {"label": "False flag costs more (3:1)",    "cost_fp": 150, "cost_fn": 50},
+    "fp_costly":  {"label": "Industry-aligned (2:1)",          "cost_fp": 100, "cost_fn": 50},
+}
+DEFAULT_SCENARIO = "fp_costly" 
+ 
+sweep_thresholds = np.arange(0.1, 0.9, 0.01)
+raw_sweep = []
+for t in sweep_thresholds:
     preds = (probs > t).astype(int)
-    fp = ((preds == 1) & (y_test == 0)).sum()
-    fn = ((preds == 0) & (y_test == 1)).sum()
-    total_cost = fp * cost_fp + fn * cost_fn
-    if total_cost < best_cost:
-        best_cost, best_thresh = total_cost, t
-
-print(f"Optimal threshold: {best_thresh}, cost: {best_cost}")
+    fp = int(((preds == 1) & (y_test == 0)).sum())
+    fn = int(((preds == 0) & (y_test == 1)).sum())
+    tp = int(((preds == 1) & (y_test == 1)).sum())
+    tn = int(((preds == 0) & (y_test == 0)).sum())
+    raw_sweep.append({"threshold": float(t), "tp": tp, "fp": fp, "tn": tn, "fn": fn})
+ 
+cost_scenario_results = {}
+for key, scenario in COST_SCENARIOS.items():
+    best_thresh, best_cost = None, float("inf")
+    for row in raw_sweep:
+        total_cost = row["fp"] * scenario["cost_fp"] + row["fn"] * scenario["cost_fn"]
+        if total_cost < best_cost:
+            best_cost, best_thresh = total_cost, row["threshold"]
+    cost_scenario_results[key] = {
+        **scenario, "optimal_threshold": best_thresh, "optimal_cost": best_cost,
+    }
+    print(f"[{scenario['label']}] optimal threshold: {best_thresh}, cost: {best_cost}")
+ 
+best_thresh = cost_scenario_results[DEFAULT_SCENARIO]["optimal_threshold"]
+cost_fp = COST_SCENARIOS[DEFAULT_SCENARIO]["cost_fp"]
+cost_fn = COST_SCENARIOS[DEFAULT_SCENARIO]["cost_fn"]
+print(f"\nDefault scenario for Score tab: {DEFAULT_SCENARIO} (threshold {best_thresh})")
 print(classification_report(y_test, probs > best_thresh))
 
 #Exporting all artifacts for app.py
