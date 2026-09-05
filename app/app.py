@@ -4,9 +4,6 @@ import plotly.graph_objects as go
 import joblib
 import json
 
-from pathlib import Path
-APP_DIR = Path(__file__).parent
-
 st.set_page_config(page_title="Order Risk Assessment", page_icon=None, layout="centered")
 
 st.markdown("""
@@ -68,29 +65,31 @@ st.markdown("""
 @st.cache_resource
 def load_artifacts():
     try:
-        model = joblib.load(APP_DIR / "risk_model.pkl")
-        explainer = joblib.load(APP_DIR / "shap_explainer.pkl")
-        with open(APP_DIR / "feature_config.json") as f:
+        model = joblib.load("risk_model.pkl")
+        explainer = joblib.load("shap_explainer.pkl")
+        with open("feature_config.json") as f:
             feature_config = json.load(f)
-        with open(APP_DIR / "cat_options.json") as f:
+        with open("cat_options.json") as f:
             cat_options = json.load(f)
-        with open(APP_DIR / "num_ranges.json") as f:
+        with open("num_ranges.json") as f:
             num_ranges = json.load(f)
-        with open(APP_DIR / "threshold_config.json") as f:
+        with open("threshold_config.json") as f:
             threshold_config = json.load(f)
-        with open(APP_DIR / "model_metrics.json") as f:
+        with open("model_metrics.json") as f:
             model_metrics = json.load(f)
-        with open(APP_DIR / "threshold_sweep.json") as f:
+        with open("threshold_sweep.json") as f:
             threshold_sweep = json.load(f)
-        with open(APP_DIR / "audit_sample.json") as f:
+        with open("audit_sample.json") as f:
             audit_sample = json.load(f)
+        with open("cost_scenarios.json") as f:
+            cost_scenarios = json.load(f)
         return (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
-                model_metrics, threshold_sweep, audit_sample, None)
+                model_metrics, threshold_sweep, audit_sample, cost_scenarios, None)
     except FileNotFoundError as e:
         return None, None, None, None, None, None, None, None, None, str(e)
 
 (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
- model_metrics, threshold_sweep, audit_sample, load_error) = load_artifacts()
+ model_metrics, threshold_sweep, audit_sample, cost_scenarios, load_error) = load_artifacts()
 
 if load_error:
     st.error(
@@ -421,8 +420,8 @@ with tab_score:
             st.write(f"Decision threshold: {threshold} (selected to minimize total cost)")
             st.write(
                 f"Threshold assumes a false positive (flagging a good order) costs "
-                f"{threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
-                f"{threshold_config['cost_fn']}."
+                f"₹{threshold_config['cost_fp']}, and a false negative (missing a bad order) costs "
+                f"₹{threshold_config['cost_fn']}."
             )
             st.json(user_input)
 
@@ -433,26 +432,63 @@ with tab_metrics:
         f"All figures below are computed on a held-out test set of {model_metrics['test_set_size']:,} orders "
         f"({model_metrics['positive_rate']:.1%} positive rate) that the model never saw during training."
     )
-
+ 
     m1, m2 = st.columns(2)
     with m1:
         st.metric("AUC-ROC", f"{model_metrics['auc_roc']:.3f}")
     with m2:
         st.metric("AUC-PR", f"{model_metrics['auc_pr']:.3f}")
-
+ 
     st.divider()
-    st.subheader("Threshold and Cost Trade-off")
+    st.subheader("Cost Assumption Matters")
     st.write(
-        "The decision threshold controls how aggressively orders get flagged. Move the slider "
-        "to see how precision, recall, and estimated cost change."
+        "The true cost of a false positive (wrongly flagging a good order) versus a false "
+        "negative (missing a bad one) isn't obvious. Ecommerce fraud-prevention research "
+        "generally finds false declines cost merchants more than the fraud they prevent, "
+        "which cuts against the intuition that missing a bad order is always worse. Rather "
+        "than pick one number, three scenarios are compared below."
     )
-
+ 
+    scenarios = cost_scenarios["scenarios"]
+ 
+    def best_row_for(cost_fp, cost_fn):
+        costs = sweep_df["fp"] * cost_fp + sweep_df["fn"] * cost_fn
+        return sweep_df.loc[costs.idxmin()], int(costs.min())
+ 
+    comparison_rows = []
+    for key, s in scenarios.items():
+        row, total_cost = best_row_for(s["cost_fp"], s["cost_fn"])
+        comparison_rows.append({
+            "Scenario": s["label"],
+            "FP:FN cost ratio": f"{s['cost_fn']}:{s['cost_fp']}" if s["cost_fp"] > s["cost_fn"]
+                                  else f"1:{round(s['cost_fn']/s['cost_fp'], 1)}",
+            "Threshold": f"{row['threshold']:.2f}",
+            "Precision": f"{row['precision']:.2f}",
+            "Recall": f"{row['recall']:.2f}",
+            "Est. cost": f"₹{total_cost:,}",
+        })
+    st.dataframe(pd.DataFrame(comparison_rows).set_index("Scenario"), use_container_width=True)
+ 
+    st.caption(
+        "The live scoring tab uses the industry-aligned (2:1) scenario's threshold by default. "
+        "Explore any scenario in detail below."
+    )
+ 
+    scenario_key = st.selectbox(
+        "Cost scenario", options=list(scenarios.keys()),
+        format_func=lambda k: scenarios[k]["label"],
+        index=list(scenarios.keys()).index(cost_scenarios["default_scenario"]),
+    )
+    selected = scenarios[scenario_key]
+    cost_fp, cost_fn = selected["cost_fp"], selected["cost_fn"]
+ 
     slider_threshold = st.slider(
-        "Decision threshold", min_value=0.05, max_value=0.95, value=threshold_config["threshold"], step=0.01
+        "Decision threshold", min_value=0.05, max_value=0.95,
+        value=round(selected["optimal_threshold"], 2), step=0.01,
     )
-
+ 
     closest_row = sweep_df.iloc[(sweep_df["threshold"] - slider_threshold).abs().idxmin()]
-
+ 
     s1, s2, s3 = st.columns(3)
     with s1:
         st.metric("Precision", f"{closest_row['precision']:.2f}")
@@ -460,21 +496,20 @@ with tab_metrics:
         st.metric("Recall", f"{closest_row['recall']:.2f}")
     with s3:
         st.metric("F1 Score", f"{closest_row['f1']:.2f}")
-
+ 
     fp_count = int(closest_row["fp"])
     fn_count = int(closest_row["fn"])
-    cost_fp = threshold_config["cost_fp"]
-    cost_fn = threshold_config["cost_fn"]
-    total_cost = int(closest_row["cost"])
+    total_cost = fp_count * cost_fp + fn_count * cost_fn
     legit_flagged_pct = fp_count / (fp_count + int(closest_row["tn"])) if (fp_count + closest_row["tn"]) > 0 else 0
-
+ 
     st.write(
-        f"At this threshold: **{legit_flagged_pct:.1%}** of legitimate orders are wrongly flagged "
-        f"({fp_count} orders), costing an estimated **{fp_count * cost_fp:,} Brazilian Reals** in review overhead. "
-        f"**{fn_count}** risky orders are missed, costing an estimated **{fn_count * cost_fn:,} Brazilian Reals** in unmanaged losses. "
-        f"Estimated total cost at this threshold: **{total_cost:,} Brazilian Reals**."
+        f"At this threshold, under the **{selected['label']}** assumption: "
+        f"**{legit_flagged_pct:.1%}** of legitimate orders are wrongly flagged "
+        f"({fp_count} orders), costing an estimated **₹{fp_count * cost_fp:,}**. "
+        f"**{fn_count}** risky orders are missed, costing an estimated **₹{fn_count * cost_fn:,}**. "
+        f"Estimated total cost: **₹{total_cost:,}**."
     )
-
+ 
     st.markdown("**Confusion matrix at this threshold**")
     cm_df = pd.DataFrame(
         [[int(closest_row["tn"]), int(closest_row["fp"])],
@@ -483,7 +518,7 @@ with tab_metrics:
         columns=["Predicted: Not Returned", "Predicted: Returned"],
     )
     st.dataframe(cm_df, use_container_width=True)
-
+ 
     st.markdown("**Precision-recall curve**")
     pr_sorted = sweep_df.sort_values("recall")
     fig_pr = go.Figure()
@@ -500,7 +535,7 @@ with tab_metrics:
         margin=dict(t=20, b=20, l=40, r=20), showlegend=False,
     )
     st.plotly_chart(fig_pr, use_container_width=True)
-
+ 
     with st.expander("Classification report at the default cost-optimal threshold"):
         st.caption(f"Threshold = {model_metrics['threshold_used']}, chosen to minimize total cost.")
         report = model_metrics["classification_report"]
