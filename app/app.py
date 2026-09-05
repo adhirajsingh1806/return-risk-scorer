@@ -4,6 +4,9 @@ import plotly.graph_objects as go
 import joblib
 import json
 
+from pathlib import Path
+APP_DIR = Path(__file__).parent
+
 st.set_page_config(page_title="Order Risk Assessment", page_icon=None, layout="centered")
 
 st.markdown("""
