@@ -86,7 +86,7 @@ def load_artifacts():
         return (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
                 model_metrics, threshold_sweep, audit_sample, cost_scenarios, None)
     except FileNotFoundError as e:
-        return None, None, None, None, None, None, None, None, None, str(e)
+        return None, None, None, None, None, None, None, None, None, None, str(e)
 
 (model, explainer, feature_config, cat_options, num_ranges, threshold_config,
  model_metrics, threshold_sweep, audit_sample, cost_scenarios, load_error) = load_artifacts()
