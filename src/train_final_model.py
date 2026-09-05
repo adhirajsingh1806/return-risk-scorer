@@ -233,6 +233,9 @@ for t in np.round(np.arange(0.05, 0.96, 0.01), 2):
 with open(f"{OUTPUT_DIR}/threshold_sweep.json", "w") as f:
     json.dump(sweep_rows, f, indent=2)
 
+with open(f"{OUTPUT_DIR}/cost_scenarios.json", "w") as f:
+    json.dump({"scenarios": cost_scenario_results, "default_scenario": DEFAULT_SCENARIO}, f, indent=2)
+    
 audit_base = x_test[FEATURES].reset_index(drop=True).copy()
 audit_base["true_label"] = pd.Series(y_test).reset_index(drop=True)
 audit_base["predicted_probability"] = probs
