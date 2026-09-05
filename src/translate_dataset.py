@@ -109,7 +109,7 @@ brazil_state_names = {
 }
 
 customers = pd.read_csv("olist_customers_dataset.csv")
-customers["customer_state"] = customers["customer_state"].map(brazil_to_india_state).fillna(
+customers["customer_state"] = customers["customer_state"].map(brazil_state_names).fillna(
     customers["customer_state"]
 )
 customers.to_csv("olist_customers_dataset_en.csv", index=False)
@@ -117,7 +117,7 @@ print("Saved: olist_customers_dataset_en.csv")
 
 try:
     sellers = pd.read_csv("olist_sellers_dataset.csv")
-    sellers["seller_state"] = sellers["seller_state"].map(brazil_to_india_state).fillna(
+    sellers["seller_state"] = sellers["seller_state"].map(brazil_state_names).fillna(
         sellers["seller_state"]
     )
     sellers.to_csv("olist_sellers_dataset_en.csv", index=False)
